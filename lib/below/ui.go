@@ -24,9 +24,67 @@ func Draw(x, y int, text string) {
 }
 
 func DrawWithColor(x, y int, text string, colorVal string) {
-	color := Colors[colorVal]
+	//color := Colors[colorVal]
 	//color.On()
 	term.AddAt(x, y, text)
 	term.AddAt(*term.Cols-1, *term.Rows-1, " ")
 	//color.Off()
+}
+
+func Clear() {
+	for x := 0; x < *term.Cols; x++ {
+		// Do not clear status line for now.
+		for y := 0; y < *term.Rows-1; y++ {
+			Draw(x, y, " ")
+		}
+	}
+}
+
+func DrawCrosshairs() {
+	x := *term.Cols / 2
+	y := *term.Rows / 2
+	DrawWithColor(x, y, "X", "red")
+}
+
+func (game *Game) Draw() {
+	Clear()
+	for _, ui := range game.uis {
+		ui.Draw(game)
+	}
+}
+
+func (world World) Draw(game *Game) {
+	cols := *term.Cols
+	// Leave a row for status.
+	rows := *term.Rows - 1
+	startX := 0
+	startY := 0
+	endX := Min(WORLD_COLS, startX+cols)
+	endY := Min(WORLD_ROWS, startY+rows)
+
+	var tile Tile
+
+	for y := startY; y < endY; y++ {
+		for x := startX; x < endX; x++ {
+			tile = game.world.GetTile(x, y)
+			DrawWithColor(x, y, fmt.Sprintf("%c", tile.glyph), tile.color)
+		}
+	}
+}
+
+func (ui UI) Draw(game *Game) {
+	switch ui {
+	case "start":
+		DrawWithColor(0, 0, "Welcome to Below!", "red")
+		Draw(0, 1, "Press any key to start.")
+	case "win":
+		Draw(0, 0, "Congratulations, you win!")
+		Draw(0, 1, "Press Backspace to exit, anything else to play again.")
+	case "lose":
+		Draw(0, 0, "Sorry, better luck next time.")
+		Draw(0, 1, "Press Backspace to exit, anything else to play again.")
+	case "play":
+		game.world.Draw(game)
+		DrawCrosshairs()
+	}
 }

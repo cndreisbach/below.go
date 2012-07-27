@@ -1,8 +1,6 @@
 package below
 
 import (
-	"code.google.com/p/termon"
-	"fmt"
 	"math/rand"
 )
 
@@ -84,25 +82,6 @@ func (world World) GetTileBlock(x int, y int) []Tile {
 		}
 	}
 	return tiles
-}
-
-func (world World) Draw(game *Game) {
-	cols := *term.Cols
-	// Leave a row for status.
-	rows := *term.Rows - 1
-	startX := 0
-	startY := 0
-	endX := Min(WORLD_COLS, startX+cols)
-	endY := Min(WORLD_ROWS, startY+rows)
-
-	var tile Tile
-
-	for y := startY; y < endY; y++ {
-		for x := startX; x < endX; x++ {
-			tile = game.world.GetTile(x, y)
-			DrawWithColor(x, y, fmt.Sprintf("%c", tile.glyph), tile.color)
-		}
-	}
 }
 
 func RandomTile() Tile {
