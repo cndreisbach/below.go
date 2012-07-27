@@ -10,6 +10,21 @@ type Game struct {
 	uis   []UI
 	world World
 }
+type Tile struct {
+	kind  string
+	glyph string
+	color string
+}
+
+var (
+	WORLD_SIZE = []int{160, 60}
+
+	TILES = map[string]Tile{
+		"floor": Tile{"floor", ".", "white"},
+		"wall":  Tile{"wall", "#", "white"},
+		"bound": Tile{"bound", "X", "black"},
+	}
+)
 
 func (ui UI) Draw() {
 	switch ui {
