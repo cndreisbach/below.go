@@ -20,10 +20,10 @@ type Tile struct {
 
 const (
 	BACKSPACE = 8
-	DELETE    = 127
-	ESCAPE    = 27
 	LF        = 10
 	CR        = 13
+	ESCAPE    = 27
+	DELETE    = 127
 )
 
 var (
@@ -108,7 +108,7 @@ func (game *Game) ProcessInput(input int) {
 			game.uis = []UI{"lose"}
 		}
 	default:
-		if input == BACKSPACE || input == DELETE {
+		if input == term.KEY_BACKSPACE || input == BACKSPACE || input == DELETE {
 			game.uis = []UI{}
 		} else {
 			game.world = RandomWorld()
