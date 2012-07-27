@@ -14,7 +14,7 @@ type Game struct {
 }
 type Tile struct {
 	kind  string
-	glyph string
+	glyph rune
 	color string
 }
 
@@ -31,9 +31,9 @@ var (
 	WORLD_ROWS = 60
 
 	TILES = map[string]Tile{
-		"floor": Tile{"floor", ".", "white"},
-		"wall":  Tile{"wall", "#", "white"},
-		"bound": Tile{"bound", "X", "black"},
+		"floor": Tile{"floor", '.', "white"},
+		"wall":  Tile{"wall", '#', "white"},
+		"bound": Tile{"bound", 'X', "black"},
 	}
 )
 
@@ -74,7 +74,7 @@ func (world World) Draw() {
 
 	for y := startY; y < endY; y++ {
 		for x := startX; x < endX; x++ {
-			term.AddAt(x, y, world[y][x].glyph)
+			term.AddAt(x, y, fmt.Sprintf("%c", world[y][x].glyph))
 		}
 	}
 }
