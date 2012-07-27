@@ -17,3 +17,9 @@ Then, go to the project's root directory and type:
     go build
 
 You should now have an executable called `below`. Run that.
+
+My favorite roguelike
+----------------------
+
+My favorite roguelike is [Brogue](https://sites.google.com/site/broguegame/).
+Hopefully, this game will be inspired by it someday.
