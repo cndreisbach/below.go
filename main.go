@@ -1,26 +1,9 @@
 package main
 
 import (
+	"./lib/below"
 	"code.google.com/p/termon"
 )
-
-const (
-	BACKSPACE = 8
-	LF        = 10
-	CR        = 13
-	ESCAPE    = 27
-	DELETE    = 127
-)
-
-func Min(a ...int) int {
-	min := int(^uint(0) >> 1) // largest int
-	for _, i := range a {
-		if i < min {
-			min = i
-		}
-	}
-	return min
-}
 
 func main() {
 	// Must!
@@ -32,7 +15,7 @@ func main() {
 	// Suppress user input.
 	term.Noecho()
 
-	game := NewGame()
+	game := below.NewGame()
 	game.Run()
 
 	// Reset the terminal.

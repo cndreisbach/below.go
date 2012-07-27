@@ -1,8 +1,16 @@
-package main
+package below
 
 import (
 	"code.google.com/p/termon"
 	"fmt"
+)
+
+const (
+	BACKSPACE = 8
+	LF        = 10
+	CR        = 13
+	ESCAPE    = 27
+	DELETE    = 127
 )
 
 type UI string

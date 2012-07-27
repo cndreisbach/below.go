@@ -1,4 +1,4 @@
-package main
+package below
 
 import (
 	"code.google.com/p/termon"
@@ -23,6 +23,16 @@ var (
 		"bound": Tile{"bound", 'X', "black"},
 	}
 )
+
+func Min(a ...int) int {
+	min := int(^uint(0) >> 1) // largest int
+	for _, i := range a {
+		if i < min {
+			min = i
+		}
+	}
+	return min
+}
 
 func (world World) GetTile(x int, y int) Tile {
 	if x >= 0 && x < WORLD_COLS && y >= 0 && y < WORLD_ROWS {
