@@ -1,4 +1,4 @@
-package below
+package main
 
 import (
 	"code.google.com/p/termon"
@@ -31,34 +31,39 @@ func (world World) GetTile(x int, y int) Tile {
 	return TILES["bound"]
 }
 
-func (world World) SmoothTiles() World {
+func (world World) SmoothWorld() World {
+	newWorld := make(World, WORLD_ROWS)
+
 	for y, row := range world {
-		world[y] = world.SmoothRow(row, y)
+		newWorld[y] = world.SmoothRow(row, y)
 	}
-	return world
+	return newWorld
 }
 
 func (world World) SmoothRow(row []Tile, y int) []Tile {
+	var floorCount int
+	newRow := make([]Tile, WORLD_COLS)
+
 	for x := range row {
 		// for each tile
-		// if the 3x3 block centered on it contains 5 or more walls
-		wallCount := 0
+		// if the 3x3 block centered on it contains 5 or more floors
+		floorCount = 0
 		for _, tile := range world.GetTileBlock(x, y) {
-			if tile != TILES["floor"] {
-				wallCount += 1
+			if tile == TILES["floor"] {
+				floorCount += 1
 			}
 		}
 
-		// then the tile is a wall
-		// otherwise it is a floor
-		if wallCount >= 5 {
-			row[x] = TILES["wall"]
+		// then the tile is a floor
+		// otherwise it is a wall
+		if floorCount >= 5 {
+			newRow[x] = TILES["floor"]
 		} else {
-			row[x] = TILES["floor"]
+			newRow[x] = TILES["wall"]
 		}
 	}
 
-	return row
+	return newRow
 }
 
 func (world World) GetTileBlock(x int, y int) []Tile {

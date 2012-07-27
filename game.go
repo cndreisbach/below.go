@@ -1,4 +1,4 @@
-package below
+package main
 
 import (
 	"code.google.com/p/termon"
@@ -46,7 +46,7 @@ func (game *Game) Clear() {
 func (game *Game) ProcessInput(input int) {
 	// Temporarily print input on status line
 	term.AddAt(0, *term.Rows-1, "               ")
-	term.AddAt(0, *term.Rows-1, fmt.Sprint(input))
+	term.AddAt(0, *term.Rows-1, fmt.Sprintf("%c", input))
 
 	ui := game.uis[len(game.uis)-1]
 	switch ui {
@@ -56,8 +56,8 @@ func (game *Game) ProcessInput(input int) {
 	case "play":
 		if input == LF || input == CR {
 			game.uis = []UI{"win"}
-		} else if input == 115 {
-			game.world = game.world.SmoothTiles()
+		} else if input == 's' {
+			game.world = game.world.SmoothWorld()
 			game.uis = []UI{"play"}
 		} else {
 			game.uis = []UI{"lose"}

@@ -18,6 +18,8 @@ Then, go to the project's root directory and type:
 
 You should now have an executable called `below`. Run that.
 
+When playing the game, type `s` to smooth the world, `Return` to win, and anything else to lose.
+
 My favorite roguelike
 ----------------------
 

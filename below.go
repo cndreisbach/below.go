@@ -1,4 +1,4 @@
-package below
+package main
 
 import (
 	"code.google.com/p/termon"
