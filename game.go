@@ -43,10 +43,6 @@ func (game *Game) Clear() {
 	}
 }
 
-func (game *Game) GetTile(x int, y int) Tile {
-	return game.world[y][x]
-}
-
 func (game *Game) ProcessInput(input int) {
 	// Temporarily print input on status line
 	term.AddAt(0, *term.Rows-1, "               ")
@@ -60,6 +56,9 @@ func (game *Game) ProcessInput(input int) {
 	case "play":
 		if input == LF || input == CR {
 			game.uis = []UI{"win"}
+		} else if input == 115 {
+			game.world = game.world.SmoothTiles()
+			game.uis = []UI{"play"}
 		} else {
 			game.uis = []UI{"lose"}
 		}
