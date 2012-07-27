@@ -19,22 +19,6 @@ type Game struct {
 	world World
 }
 
-func (ui UI) Draw(game *Game) {
-	switch ui {
-	case "start":
-		term.AddAt(0, 0, "Welcome to Below!")
-		term.AddAt(0, 1, "Press any key to start.")
-	case "win":
-		term.AddAt(0, 0, "Congratulations, you win!")
-		term.AddAt(0, 1, "Press Backspace to exit, anything else to play again.")
-	case "lose":
-		term.AddAt(0, 0, "Sorry, better luck next time.")
-		term.AddAt(0, 1, "Press Backspace to exit, anything else to play again.")
-	case "play":
-		game.world.Draw(game)
-	}
-}
-
 func (game *Game) Draw() {
 	game.Clear()
 	for _, ui := range game.uis {
@@ -46,15 +30,38 @@ func (game *Game) Clear() {
 	for x := 0; x < *term.Cols; x++ {
 		// Do not clear status line for now.
 		for y := 0; y < *term.Rows-1; y++ {
-			term.AddAt(x, y, " ")
+			Draw(x, y, " ")
 		}
+	}
+}
+
+func (game *Game) DrawCrosshairs() {
+	x := *term.Cols / 2
+	y := *term.Rows / 2
+	DrawWithColor(x, y, "X", "red")
+}
+
+func (ui UI) Draw(game *Game) {
+	switch ui {
+	case "start":
+		DrawWithColor(0, 0, "Welcome to Below!", "red")
+		Draw(0, 1, "Press any key to start.")
+	case "win":
+		Draw(0, 0, "Congratulations, you win!")
+		Draw(0, 1, "Press Backspace to exit, anything else to play again.")
+	case "lose":
+		Draw(0, 0, "Sorry, better luck next time.")
+		Draw(0, 1, "Press Backspace to exit, anything else to play again.")
+	case "play":
+		game.world.Draw(game)
+		game.DrawCrosshairs()
 	}
 }
 
 func (game *Game) ProcessInput(input int) {
 	// Temporarily print input on status line
-	term.AddAt(0, *term.Rows-1, "               ")
-	term.AddAt(0, *term.Rows-1, fmt.Sprintf("%c", input))
+	Draw(0, *term.Rows-1, "               ")
+	Draw(0, *term.Rows-1, fmt.Sprint(input))
 
 	ui := game.uis[len(game.uis)-1]
 	switch ui {

@@ -54,8 +54,8 @@ func (world World) SmoothRow(row []Tile, y int) []Tile {
 	var floorCount int
 	newRow := make([]Tile, WORLD_COLS)
 
+	// for each tile in row
 	for x := range row {
-		// for each tile
 		// if the 3x3 block centered on it contains 5 or more floors
 		floorCount = 0
 		for _, tile := range world.GetTileBlock(x, y) {
@@ -95,9 +95,12 @@ func (world World) Draw(game *Game) {
 	endX := Min(WORLD_COLS, startX+cols)
 	endY := Min(WORLD_ROWS, startY+rows)
 
+	var tile Tile
+
 	for y := startY; y < endY; y++ {
 		for x := startX; x < endX; x++ {
-			term.AddAt(x, y, fmt.Sprintf("%c", game.world.GetTile(x, y).glyph))
+			tile = game.world.GetTile(x, y)
+			DrawWithColor(x, y, fmt.Sprintf("%c", tile.glyph), tile.color)
 		}
 	}
 }
