@@ -2,8 +2,9 @@ package main
 
 import (
 	"./lib/below"
-	"code.google.com/p/termon"
+	"code.google.com/p/goncurses"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -11,19 +12,22 @@ func main() {
 	// Seed the random number generator
 	rand.Seed(time.Now().Unix())
 
-	// Must!
-	term.Init()
+	stdscr, err := goncurses.Init()
+	defer goncurses.End()
 
-	// Allows use of function keys and arrow keys.
-	term.Keypad()
+	goncurses.StartColor()
 
-	// Suppress user input.
-	term.Noecho()
+	goncurses.Raw(true)
+	goncurses.Echo(false)
+	goncurses.CBreak(true)
+	goncurses.Cursor(0)
 
-	game := below.NewGame()
+	below.SetupColors()
+
+	if err != nil {
+		os.Exit(1)
+	}
+
+	game := below.NewGame(stdscr)
 	game.Run()
-
-	// Reset the terminal.
-	// It will look as well as before term.Init() was called.
-	term.End()
 }
