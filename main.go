@@ -3,9 +3,14 @@ package main
 import (
 	"./lib/below"
 	"code.google.com/p/termon"
+	"math/rand"
+	"time"
 )
 
 func main() {
+	// Seed the random number generator
+	rand.Seed(time.Now().Unix())
+
 	// Must!
 	term.Init()
 
