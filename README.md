@@ -14,9 +14,10 @@ Do you have Go installed? If not, do that.
 
 Then, go to the project's root directory and type:
 
+    go get
     go build
 
-You should now have an executable called `below`. Run that.
+You should now have an executable called `below`. Run that. If you got errors about installing dependencies, I hope you know something about Go!
 
 When playing the game, type `s` to smooth the world, `Return` to win, and anything else to lose.
 
