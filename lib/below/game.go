@@ -34,7 +34,7 @@ func (game *Game) ProcessInput(input int) {
 			game.uis = []UI{"lose"}
 		}
 	default:
-		if input == BACKSPACE || input == DELETE {
+		if input == term.KEY_BACKSPACE || input == BACKSPACE || input == DELETE {
 			game.uis = []UI{}
 		} else {
 			game.world = RandomWorld()

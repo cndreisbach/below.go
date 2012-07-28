@@ -24,11 +24,11 @@ func Draw(x, y int, text string) {
 }
 
 func DrawWithColor(x, y int, text string, colorVal string) {
-	//color := Colors[colorVal]
-	//color.On()
+	// color := Colors[colorVal]
+	// color.On()
 	term.AddAt(x, y, text)
 	term.AddAt(*term.Cols-1, *term.Rows-1, " ")
-	//color.Off()
+	// color.Off()
 }
 
 func Clear() {
