@@ -20,6 +20,8 @@ func main() {
 	// Suppress user input.
 	term.Noecho()
 
+	below.SetupColors()
+
 	game := below.NewGame()
 	game.Run()
 
