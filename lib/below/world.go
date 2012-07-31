@@ -1,6 +1,8 @@
 package below
 
 import (
+	"./ui"
+	"fmt"
 	"math/rand"
 )
 
@@ -98,4 +100,23 @@ func RandomWorld() World {
 		}
 	}
 	return world
+}
+
+func (world World) Draw(game *Game) {
+	cols := ui.Cols()
+	// Leave a row for status.
+	rows := ui.Rows() - 1
+	startX := 0
+	startY := 0
+	endX := Min(WORLD_COLS, startX+cols)
+	endY := Min(WORLD_ROWS, startY+rows)
+
+	var tile Tile
+
+	for y := startY; y < endY; y++ {
+		for x := startX; x < endX; x++ {
+			tile = game.world.GetTile(x, y)
+			ui.DrawWithColor(x, y, fmt.Sprintf("%c", tile.glyph), tile.color)
+		}
+	}
 }
