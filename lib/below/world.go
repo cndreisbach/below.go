@@ -34,6 +34,16 @@ func Min(a ...int) int {
 	return min
 }
 
+func Max(a ...int) int {
+	max := -(int(^uint(0)>>1) - 1) // smallest int
+	for _, i := range a {
+		if i > max {
+			max = i
+		}
+	}
+	return max
+}
+
 func (world World) GetTile(x int, y int) Tile {
 	if x >= 0 && x < WORLD_COLS && y >= 0 && y < WORLD_ROWS {
 		return world[y][x]
@@ -102,21 +112,38 @@ func RandomWorld() World {
 	return world
 }
 
+func GetViewportCoords(game *Game, cols int, rows int) (startX, startY, endX, endY int) {
+	centerX := game.location[0]
+	centerY := game.location[1]
+
+	startX = Max(0, centerX-(cols/2))
+	startY = Max(0, centerY-(rows/2))
+
+	endX = Min(WORLD_COLS, startX+cols)
+	endY = Min(WORLD_ROWS, startY+rows)
+
+	// If I truncated the end coordinate I’ll have ended up with a
+	// smaller-than-normal viewport. To fix that I’ll reset the start
+	// coordinates one more time.
+	startX = endX - cols
+	startY = endY - rows
+
+	return startX, startY, endX, endY
+}
+
 func (world World) Draw(game *Game) {
 	cols := ui.Cols()
 	// Leave a row for status.
 	rows := ui.Rows() - 1
-	startX := 0
-	startY := 0
-	endX := Min(WORLD_COLS, startX+cols)
-	endY := Min(WORLD_ROWS, startY+rows)
+	startX, startY, _, _ := GetViewportCoords(game, cols, rows)
 
 	var tile Tile
 
-	for y := startY; y < endY; y++ {
-		for x := startX; x < endX; x++ {
-			tile = game.world.GetTile(x, y)
+	for y := 0; y < rows; y++ {
+		for x := 0; x < cols; x++ {
+			tile = game.world.GetTile(x+startX, y+startY)
 			ui.DrawWithColor(x, y, fmt.Sprintf("%c", tile.glyph), tile.color)
 		}
 	}
+	ui.Draw(0, ui.Rows()-1, fmt.Sprint(game.location))
 }

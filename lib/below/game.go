@@ -7,8 +7,9 @@ import (
 
 type Screen string
 type Game struct {
-	screens []Screen
-	world   World
+	screens  []Screen
+	world    World
+	location [2]int
 }
 
 func (game *Game) ProcessInput(input int) {
@@ -18,12 +19,21 @@ func (game *Game) ProcessInput(input int) {
 		game.world = RandomWorld()
 		game.screens = []Screen{"play"}
 	case "play":
-		if input == ui.KEY_LF || input == ui.KEY_CR {
+		switch input {
+		case ui.KEY_LF:
+		case ui.KEY_CR:
 			game.screens = []Screen{"win"}
-		} else if input == 's' {
+		case 's':
 			game.world = game.world.SmoothWorld()
-			game.screens = []Screen{"play"}
-		} else {
+		case 'h':
+			game.location[1] -= 1
+		case 'j':
+			game.location[0] -= 1
+		case 'k':
+			game.location[0] += 1
+		case 'l':
+			game.location[1] += 1
+		default:
 			game.screens = []Screen{"lose"}
 		}
 	default:
@@ -48,7 +58,7 @@ func (game *Game) Run() {
 }
 
 func NewGame() *Game {
-	return &Game{screens: []Screen{"start"}}
+	return &Game{screens: []Screen{"start"}, location: [2]int{WORLD_COLS / 2, WORLD_ROWS / 2}}
 }
 
 func (game *Game) Draw() {
