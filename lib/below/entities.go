@@ -6,7 +6,12 @@ import (
 )
 
 type Entity interface {
-	Tick(world World) World
+	Tick(World) World
+}
+
+type Moveable interface {
+	Move(World, Coords) World
+	CanMove(World, Coords) bool
 }
 
 type Player struct {
