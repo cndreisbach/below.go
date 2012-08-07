@@ -6,6 +6,8 @@ import (
 	"math/rand"
 )
 
+// TODO Convert World from [][]Tile to a struct with tiles and player
+
 type World [][]Tile
 type Tile struct {
 	kind  string
