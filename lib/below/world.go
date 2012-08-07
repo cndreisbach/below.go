@@ -6,9 +6,11 @@ import (
 	"math/rand"
 )
 
-// TODO Convert World from [][]Tile to a struct with tiles and player
+type World struct {
+	tiles  [][]Tile
+	player Player
+}
 
-type World [][]Tile
 type Tile struct {
 	kind  string
 	glyph rune
@@ -31,24 +33,29 @@ func RandomTile() Tile {
 	return TILES[tiles[rand.Intn(len(tiles))]]
 }
 
-func RandomWorld() World {
-	world := make(World, WORLD_ROWS)
-	for y := range world {
-		world[y] = make([]Tile, WORLD_COLS)
-		for x := range world[y] {
-			world[y][x] = RandomTile()
+func RandomWorld() (world World) {
+	tiles := make([][]Tile, WORLD_ROWS)
+	for y := range tiles {
+		tiles[y] = make([]Tile, WORLD_COLS)
+		for x := range tiles[y] {
+			tiles[y][x] = RandomTile()
 		}
 	}
+	world.tiles = tiles
+
 	for i := 0; i < 3; i++ {
-		world = world.SmoothWorld()
+		world.SmoothWorld()
 	}
+
+	world.player = NewPlayer(world)
+
 	return world
 }
 
 func (world World) GetTile(coords Coords) Tile {
 	x, y := coords.X(), coords.Y()
 	if x >= 0 && x < WORLD_COLS && y >= 0 && y < WORLD_ROWS {
-		return world[y][x]
+		return world.tiles[y][x]
 	}
 	return TILES["bound"]
 }
@@ -62,16 +69,17 @@ func (world World) FindEmptyCoords() Coords {
 	return coords
 }
 
-func (world World) SmoothWorld() World {
-	newWorld := make(World, WORLD_ROWS)
+func (world *World) SmoothWorld() {
+	newTiles := make([][]Tile, WORLD_ROWS)
 
-	for y, row := range world {
-		newWorld[y] = world.smoothRow(row, y)
+	for y, row := range world.tiles {
+		newTiles[y] = world.smoothRow(row, y)
 	}
-	return newWorld
+
+	world.tiles = newTiles
 }
 
-func (world World) smoothRow(row []Tile, y int) []Tile {
+func (world *World) smoothRow(row []Tile, y int) []Tile {
 	var floorCount int
 	newRow := make([]Tile, WORLD_COLS)
 
@@ -122,5 +130,7 @@ func (world World) Draw(game *Game) {
 			ui.DrawWithColor(x, y, fmt.Sprintf("%c", tile.glyph), tile.color)
 		}
 	}
-	ui.Draw(0, ui.Rows()-1, fmt.Sprint(game.player.location))
+
+	world.player.Draw(game)
+	ui.Draw(0, ui.Rows()-1, fmt.Sprint(world.player.location))
 }

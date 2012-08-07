@@ -9,7 +9,6 @@ type Screen string
 type Game struct {
 	screens []Screen
 	world   World
-	player  Player
 }
 
 func (game *Game) ProcessInput(input int) {
@@ -20,7 +19,7 @@ func (game *Game) ProcessInput(input int) {
 	case "play":
 		switch input {
 		case 's':
-			game.world = game.world.SmoothWorld()
+			game.world.SmoothWorld()
 		// case 'h':
 		// 	game.location[1] -= 1
 		// case 'j':
@@ -56,7 +55,6 @@ func (game *Game) Run() {
 
 func (game *Game) Reset() {
 	game.world = RandomWorld()
-	game.player = NewPlayer(game.world)
 	game.screens = []Screen{"play"}
 }
 
@@ -76,7 +74,7 @@ func (game *Game) GetViewportCoords() (startX, startY, endX, endY int) {
 	// Leave a row for status.
 	rows := ui.Rows() - 1
 
-	player := game.player
+	player := game.world.player
 	centerX := player.location.X()
 	centerY := player.location.Y()
 
@@ -108,6 +106,5 @@ func (screen Screen) Draw(game *Game) {
 		ui.Draw(0, 1, "Press Backspace to exit, anything else to play again.")
 	case "play":
 		game.world.Draw(game)
-		game.player.Draw(game)
 	}
 }
