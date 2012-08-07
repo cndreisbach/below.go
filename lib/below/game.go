@@ -29,8 +29,7 @@ func (game *Game) ProcessInput(input int) {
 		// 	game.location[0] += 1
 		// case 'l':
 		// 	game.location[1] += 1
-		case ui.KEY_LF:
-		case ui.KEY_CR:
+		case ui.KEY_LF, ui.KEY_CR:
 			game.screens = []Screen{"win"}
 		default:
 			game.screens = []Screen{"lose"}
