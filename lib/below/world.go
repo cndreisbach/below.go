@@ -116,6 +116,11 @@ func (world World) GetTileBlock(coords Coords) []Tile {
 	return tiles
 }
 
+func (world World) MovePlayer(direction string) World {
+	player := world.player
+	return player.Move(world, DestinationCoords(player.location, direction))
+}
+
 func (world World) Draw(game *Game) {
 	startX, startY, endX, endY := game.GetViewportCoords()
 

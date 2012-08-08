@@ -13,21 +13,20 @@ type Game struct {
 
 func (game *Game) ProcessInput(input int) {
 	screen := game.screens[len(game.screens)-1]
+
 	switch screen {
 	case "start":
 		game.Reset()
 	case "play":
 		switch input {
-		case 's':
-			game.world.SmoothWorld()
-		// case 'h':
-		// 	game.location[1] -= 1
-		// case 'j':
-		// 	game.location[0] -= 1
-		// case 'k':
-		// 	game.location[0] += 1
-		// case 'l':
-		// 	game.location[1] += 1
+		case 'h':
+			game.world = game.world.MovePlayer("w")
+		case 'j':
+			game.world = game.world.MovePlayer("s")
+		case 'k':
+			game.world = game.world.MovePlayer("n")
+		case 'l':
+			game.world = game.world.MovePlayer("e")
 		case ui.KEY_LF, ui.KEY_CR:
 			game.screens = []Screen{"win"}
 		default:

@@ -38,7 +38,7 @@ func dirToOffset(dir string) Coords {
 	case "n":
 		return Coords{0, -1}
 	case "s":
-		return Coords{-1, 1}
+		return Coords{0, 1}
 	case "nw":
 		return Coords{-1, -1}
 	case "ne":
