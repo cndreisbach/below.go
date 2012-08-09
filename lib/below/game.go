@@ -19,14 +19,22 @@ func (game *Game) ProcessInput(input int) {
 		game.Reset()
 	case "play":
 		switch input {
-		case 'h':
-			game.world = game.world.MovePlayer("w")
-		case 'j':
-			game.world = game.world.MovePlayer("s")
+		case 'y':
+			game.world = game.world.MovePlayer("nw")
 		case 'k':
 			game.world = game.world.MovePlayer("n")
+		case 'u':
+			game.world = game.world.MovePlayer("ne")
 		case 'l':
 			game.world = game.world.MovePlayer("e")
+		case 'n':
+			game.world = game.world.MovePlayer("se")
+		case 'j':
+			game.world = game.world.MovePlayer("s")
+		case 'b':
+			game.world = game.world.MovePlayer("sw")
+		case 'h':
+			game.world = game.world.MovePlayer("w")
 		case ui.KEY_LF, ui.KEY_CR:
 			game.screens = []Screen{"win"}
 		default:
