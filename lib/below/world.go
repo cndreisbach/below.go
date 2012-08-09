@@ -3,6 +3,7 @@ package below
 import (
 	"./ui"
 	"fmt"
+
 	"math/rand"
 )
 
@@ -58,6 +59,13 @@ func (world World) GetTile(coords Coords) Tile {
 		return world.tiles[y][x]
 	}
 	return TILES["bound"]
+}
+
+func (world *World) SetTile(coords Coords, tile Tile) {
+	x, y := coords.X(), coords.Y()
+	if x >= 0 && x < WORLD_COLS && y >= 0 && y < WORLD_ROWS {
+		world.tiles[y][x] = tile
+	}
 }
 
 func (world World) FindEmptyCoords() Coords {
@@ -118,7 +126,7 @@ func (world World) GetTileBlock(coords Coords) []Tile {
 
 func (world World) MovePlayer(direction string) World {
 	player := world.player
-	return player.Move(world, DestinationCoords(player.location, direction))
+	return player.MoveOrDig(world, DestinationCoords(player.location, direction))
 }
 
 func (world World) Draw(game *Game) {
@@ -137,5 +145,10 @@ func (world World) Draw(game *Game) {
 	}
 
 	world.player.Draw(game)
-	ui.Draw(0, ui.Rows()-1, fmt.Sprint(world.player.location))
+	world.DrawHUD(game)
+}
+
+func (world World) DrawHUD(game *Game) {
+	hudText := fmt.Sprintf("Location: %v", world.player.location)
+	ui.Draw(0, ui.Rows()-1, fmt.Sprint(hudText))
 }

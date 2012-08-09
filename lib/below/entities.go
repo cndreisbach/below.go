@@ -14,6 +14,11 @@ type Moveable interface {
 	CanMove(World, Coords) bool
 }
 
+type Digger interface {
+	Dig(World, Coords) World
+	CanDig(World, Coords) bool
+}
+
 type Player struct {
 	glyph    rune
 	location Coords
@@ -38,6 +43,27 @@ func (player Player) Move(world World, coords Coords) World {
 		world.player = player
 	}
 	return world
+}
+
+func (player Player) CanDig(world World, coords Coords) bool {
+	tile := world.GetTile(coords)
+	return tile.kind == "wall"
+}
+
+func (player Player) Dig(world World, coords Coords) World {
+	if player.CanDig(world, coords) {
+		world.SetTile(coords, TILES["floor"])
+	}
+	return world
+}
+
+func (player Player) MoveOrDig(world World, coords Coords) (newWorld World) {
+	if player.CanMove(world, coords) {
+		newWorld = player.Move(world, coords)
+	} else {
+		newWorld = player.Dig(world, coords)
+	}
+	return newWorld
 }
 
 func (player Player) Draw(game *Game) {

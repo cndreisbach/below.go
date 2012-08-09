@@ -67,8 +67,7 @@ func DrawWithColor(x, y int, text string, colorVal string) {
 
 func Clear() {
 	for x := 0; x < *term.Cols; x++ {
-		// Do not clear status line for now.
-		for y := 0; y < *term.Rows-1; y++ {
+		for y := 0; y < *term.Rows; y++ {
 			Draw(x, y, " ")
 		}
 	}
